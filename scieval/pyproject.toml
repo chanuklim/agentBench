@@ -1,0 +1,29 @@
+[project]
+name = "scieval"
+version = "0.1.0"
+description = "Science-agent LLM evaluation platform (Inspect AI core)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "inspect-ai==0.3.246",
+    "inspect-evals[scicode]==0.14.3",
+    "pydantic>=2.7,<3",
+    "typer>=0.12",
+    "jinja2>=3.1",
+    "pandas>=2.2",
+    "pyarrow>=16",
+    "httpx>=0.27",
+    "pyyaml>=6",
+]
+
+[project.scripts]
+scieval = "scieval.runner.cli:app"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
