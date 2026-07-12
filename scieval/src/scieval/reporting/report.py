@@ -18,7 +18,7 @@ class ModelReport:
 
 def render_report(run_dir: Path, results_df: pd.DataFrame,
                   per_model: dict[str, ModelReport]) -> Path:
-    manifest = json.loads((run_dir / "manifest.json").read_text())
+    manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
     env = Environment(loader=FileSystemLoader(Path(__file__).parent / "templates"),
                       autoescape=True)
     html = env.get_template("report.html.j2").render(
@@ -28,5 +28,5 @@ def render_report(run_dir: Path, results_df: pd.DataFrame,
         rows=results_df.to_dict("records"),
     )
     p = run_dir / "report.html"
-    p.write_text(html)
+    p.write_text(html, encoding="utf-8")
     return p

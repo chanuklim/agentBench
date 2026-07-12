@@ -27,3 +27,28 @@ def test_render_report(tmp_path):
     assert "PARTIAL" in html          # 결측 축 경고
     assert "coverage" in html.lower()
     assert "r1" in html
+
+
+def test_render_report_with_nan_headline(tmp_path):
+    (tmp_path / "manifest.json").write_text('{"run_id": "r2", "suite": "toy"}')
+    df = pd.DataFrame([{
+        "run_id": "r2", "benchmark_id": "test_bench", "axis": "reasoning",
+        "model": "mockllm/model", "status": "error", "headline_metric": "accuracy",
+        "headline_value": float("nan"), "stderr": None, "total_samples": 100,
+        "completed_samples": 0, "input_tokens": 0, "output_tokens": 0,
+        "total_tokens": 0, "task_name": "test_bench",
+    }])
+    per_model = {
+        "mockllm/model": ModelReport(
+            axes={"reasoning": AxisScore(score=0.0, coverage=0.0)},
+            index=IndexResult(value=0.0, partial=True),
+            gates={"reasoning": "fail"},
+            normalized={"test_bench": 0.0},
+        )
+    }
+    p = render_report(tmp_path, df, per_model)
+    html = p.read_text(encoding="utf-8")
+    assert "test_bench" in html
+    assert "error" in html
+    assert "nan" not in html
+    assert "-" in html
