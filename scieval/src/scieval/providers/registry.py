@@ -1,5 +1,7 @@
 import os
 
+from inspect_ai.model import ModelCost
+
 from scieval.config import ModelConfig
 
 
@@ -8,16 +10,16 @@ def required_env(m: ModelConfig) -> list[str]:
     return [e for e in declared if not os.environ.get(e)]
 
 
-def model_cost_config(models: dict[str, ModelConfig]) -> dict[str, dict]:
-    out: dict[str, dict] = {}
+def model_cost_config(models: dict[str, ModelConfig]) -> dict[str, ModelCost]:
+    out: dict[str, ModelCost] = {}
     for m in models.values():
         if m.pricing is not None:
-            out[m.inspect_model] = {
-                "input": m.pricing.input_per_mtok,
-                "output": m.pricing.output_per_mtok,
-                "input_cache_write": m.pricing.cache_write_per_mtok,
-                "input_cache_read": m.pricing.cache_read_per_mtok,
-            }
+            out[m.inspect_model] = ModelCost(
+                input=m.pricing.input_per_mtok,
+                output=m.pricing.output_per_mtok,
+                input_cache_write=m.pricing.cache_write_per_mtok,
+                input_cache_read=m.pricing.cache_read_per_mtok,
+            )
     return out
 
 

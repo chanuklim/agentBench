@@ -14,13 +14,14 @@ def test_required_env(monkeypatch):
 
 
 def test_model_cost_config():
+    from inspect_ai.model import ModelCost
+
     m = _m(pricing=Pricing(input_per_mtok=0.5, output_per_mtok=1.5))
     cfg = model_cost_config({"m": m, "nc": ModelConfig(id="nc", inspect_model="mockllm/model")})
-    assert cfg == {
-        "openai-api/solar/solar-open-100b": {
-            "input": 0.5, "output": 1.5, "input_cache_write": 0.0, "input_cache_read": 0.0,
-        }
-    }
+    assert set(cfg) == {"openai-api/solar/solar-open-100b"}
+    mc = cfg["openai-api/solar/solar-open-100b"]
+    assert isinstance(mc, ModelCost)
+    assert (mc.input, mc.output, mc.input_cache_write, mc.input_cache_read) == (0.5, 1.5, 0.0, 0.0)
 
 
 def test_generate_args():
