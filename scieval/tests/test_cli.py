@@ -108,3 +108,48 @@ def test_judge_preflight_skip_allows_run(tmp_path, monkeypatch):
     # Should succeed (exit 0) because preflight is skipped
     # toy benchmark doesn't need judge at eval time, so it will run successfully
     assert result.exit_code == 0
+
+
+def test_score_empty_run_dir_exits_with_message(tmp_path, monkeypatch):
+    """score on a run dir with no eval logs should fail cleanly (exit 1 +
+    a clear message) instead of raising KeyError deep in the scoring code."""
+    monkeypatch.setenv("TEST_BASE_URL", "http://localhost:8000/v1")
+    run_dir = tmp_path / "empty-run"
+    (run_dir / "logs").mkdir(parents=True)
+
+    result = runner.invoke(app, ["score", str(run_dir), "--config-dir", str(FIXTURE)])
+
+    assert result.exit_code == 1
+    assert "no eval logs found" in result.output
+    assert str(run_dir) in result.output
+    assert not (run_dir / "results.parquet").exists()
+
+
+def test_run_force_flag_overrides_allowed_suites(tmp_path, monkeypatch):
+    """--force on `scieval run` threads through to run_suite(force=True) and
+    bypasses an allowed_suites profile restriction; without it, the run is
+    rejected before any eval happens."""
+    copied_dir = tmp_path / "config"
+    shutil.copytree(FIXTURE, copied_dir)
+
+    profiles_path = copied_dir / "profiles.yaml"
+    with open(profiles_path) as f:
+        profiles = yaml.safe_load(f)
+    profiles["local"]["allowed_suites"] = ["other_suite"]
+    with open(profiles_path, "w") as f:
+        yaml.dump(profiles, f)
+
+    monkeypatch.setenv("TEST_BASE_URL", "http://localhost:8000/v1")
+    monkeypatch.setenv("SCIEVAL_TEST_CATALOG", "1")
+    monkeypatch.setenv("SCIEVAL_HOME", str(tmp_path))
+
+    blocked = runner.invoke(app, ["run", "--suite", "toy", "--model", "mock",
+                                  "--budget", "small", "--profile", "local",
+                                  "--config-dir", str(copied_dir), "--skip-preflight"])
+    assert blocked.exit_code != 0
+
+    forced = runner.invoke(app, ["run", "--suite", "toy", "--model", "mock",
+                                 "--budget", "small", "--profile", "local",
+                                 "--config-dir", str(copied_dir), "--skip-preflight",
+                                 "--force"])
+    assert forced.exit_code == 0, forced.output

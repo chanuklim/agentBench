@@ -1,2 +1,2 @@
-local: {provides: [docker, network]}
+local: {provides: [docker, network], allowed_suites: [smoke]}
 server: {provides: [docker, network, linux, high-ram, gpu]}

@@ -83,6 +83,7 @@ def run(
     config_dir: Path = typer.Option(Path("configs")),
     limit: int | None = typer.Option(None),
     skip_preflight: bool = typer.Option(False),
+    force: bool = typer.Option(False, help="allowed_suites 프로파일 제약을 무시하고 실행"),
 ):
     cfg = load_config(config_dir)
     # 스펙 §9 preflight: 원격 endpoint 모델은 health-check 통과 후에만 실행
@@ -111,7 +112,7 @@ def run(
             )
             raise typer.Exit(1)
     out = run_suite(cfg, config_dir, suite, list(model), budget, profile,
-                    _catalog(), scieval_home(), limit=limit)
+                    _catalog(), scieval_home(), limit=limit, force=force)
     typer.echo(f"run_dir: {out.run_dir}  success: {out.success}")
     raise typer.Exit(0 if out.success else 1)
 
@@ -121,6 +122,9 @@ def score(run_dir: Path, config_dir: Path = typer.Option(Path("configs"))):
     cfg = load_config(config_dir)
     catalog = _catalog()
     df = collect_results(run_dir, catalog)
+    if df.empty:
+        typer.echo(f"no eval logs found in {run_dir}/logs", err=True)
+        raise typer.Exit(1)
     write_results(df, run_dir)
     per_model: dict[str, ModelReport] = {}
     gate_thresholds = {axis: None for axis in cfg.weights.axes}

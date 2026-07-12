@@ -10,3 +10,7 @@
    `python -c "from scieval.scoring.parity import parity_check; print(parity_check(<observed>, <n>, <published>))"`
 4. ok=False면: 프롬프트/epochs/샘플링 차이를 원인 규명 전까지 해당 벤치마크를
    공식 suite에 편입하지 않는다. 결과를 docs/runbooks/parity-log.md에 기록.
+5. 체크리스트 — 첫 실 run 이후: `_headline`의 metric 선택 로직(scieval/store/results.py)을
+   hle(cluster metrics)와 scicode scorer의 실제 .eval 로그 metric 키와 대조해
+   headline_metric이 의도한 지표를 고르는지 검증할 것. 아울러 카탈로그의
+   dataset_revision 핀 값을 설치된 inspect_evals 상수와 교차 확인할 것.

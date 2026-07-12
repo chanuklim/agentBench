@@ -21,7 +21,7 @@ HLE_STEM_CATEGORIES = [
 def _load_gpqa(epochs: int | None = None, **kw):
     from inspect_evals.gpqa import gpqa_diamond
 
-    return gpqa_diamond(epochs=epochs) if epochs else gpqa_diamond()
+    return gpqa_diamond(epochs=epochs) if epochs is not None else gpqa_diamond()
 
 
 def _load_hle(**kw):
@@ -47,6 +47,7 @@ CATALOG: dict[str, BenchmarkSpec] = {
         id="gpqa_diamond", axis="reasoning", task_name="gpqa_diamond",
         agentic=False, gated=False, requires=set(), default_epochs=4,
         judge_mode="none", dataset_revision=None, loader=_load_gpqa,
+        supports_epochs=True,
     ),
     "hle_stem": BenchmarkSpec(
         id="hle_stem", axis="reasoning", task_name="hle",

@@ -18,7 +18,12 @@ class ModelReport:
 
 def render_report(run_dir: Path, results_df: pd.DataFrame,
                   per_model: dict[str, ModelReport]) -> Path:
-    manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
+    manifest_path = run_dir / "manifest.json"
+    if not manifest_path.exists():
+        raise FileNotFoundError(
+            f"manifest.json not found in {run_dir} — was this a scieval run dir?"
+        )
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     env = Environment(loader=FileSystemLoader(Path(__file__).parent / "templates"),
                       autoescape=True)
     html = env.get_template("report.html.j2").render(

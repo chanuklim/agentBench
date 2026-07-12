@@ -16,6 +16,7 @@ class BenchmarkSpec:
     judge_mode: JudgeMode
     dataset_revision: str | None
     loader: Callable[..., Any]   # kwargs를 받아 inspect Task 반환
+    supports_epochs: bool = False  # epochs override를 실제로 받아들이는 벤치마크만 True
 
 
 @dataclass(frozen=True)
@@ -28,6 +29,8 @@ class PreparedBenchmark:
 def prepare(s: BenchmarkSpec, judge: str | None, epochs: int | None) -> PreparedBenchmark:
     if s.judge_mode != "none" and judge is None:
         raise ValueError(f"benchmark {s.id} requires a pinned judge model (no self-judging)")
+    if epochs is not None and not s.supports_epochs:
+        raise ValueError(f"benchmark {s.id} does not support an epochs override")
     kwargs: dict[str, Any] = {}
     if epochs is not None:
         kwargs["epochs"] = epochs

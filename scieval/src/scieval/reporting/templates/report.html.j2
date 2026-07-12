@@ -31,7 +31,7 @@
   {% for row in rows %}
   <tr><td>{{ row.benchmark_id }}</td><td>{{ row.model }}</td><td>{{ row.status }}</td>
       <td>{{ row.headline_metric }}</td><td>{% if row.headline_value is not none and row.headline_value == row.headline_value %}{{ "%.4g" | format(row.headline_value) }}{% else %}-{% endif %}</td>
-      <td>{{ row.stderr if row.stderr is not none else "-" }}</td>
+      <td>{% if row.stderr is not none and row.stderr == row.stderr %}{{ row.stderr }}{% else %}-{% endif %}</td>
       <td>{{ row.completed_samples }}/{{ row.total_samples }}</td>
       <td>{{ row.total_tokens }}</td></tr>
   {% endfor %}

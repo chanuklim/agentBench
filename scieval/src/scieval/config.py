@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Literal
 
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ConfigError(Exception):
@@ -12,6 +12,8 @@ class ConfigError(Exception):
 
 
 class BudgetClass(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     token_limit: str
     message_limit: int
     working_limit_s: int
@@ -19,6 +21,8 @@ class BudgetClass(BaseModel):
 
 
 class Pricing(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     input_per_mtok: float
     output_per_mtok: float
     cache_read_per_mtok: float = 0.0
@@ -26,6 +30,8 @@ class Pricing(BaseModel):
 
 
 class ModelConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     id: str = ""
     inspect_model: str
     base_url_env: str | None = None
@@ -38,38 +44,52 @@ class ModelConfig(BaseModel):
 
 
 class ProfileConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     name: str = ""
     provides: set[str] = Field(default_factory=set)
     allowed_suites: list[str] | None = None
 
 
 class SuiteEntry(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     benchmark: str
     limit: int | None = None
     epochs: int | None = None
 
 
 class SuiteConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     name: str = ""
     entries: list[SuiteEntry]
 
 
 class Anchor(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     naive: float
     expert: float | None = None
     quality: Literal["sourced", "provisional", "fallback"] = "provisional"
 
 
 class AxisWeights(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     weight: float
     benchmarks: dict[str, float]
 
 
 class WeightsConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     axes: dict[str, AxisWeights]
 
 
 class ScievalConfig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     models: dict[str, ModelConfig]
     budgets: dict[str, BudgetClass]
     profiles: dict[str, ProfileConfig]

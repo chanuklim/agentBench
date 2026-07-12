@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 from scieval.config import load_config
-from scieval.runner.manifest import build_manifest, write_manifest
+from scieval.runner.manifest import _git_sha, build_manifest, write_manifest
 from scieval.tasks.catalog import CATALOG
 
 FIXTURE = Path(__file__).parent / "fixtures" / "config"
@@ -35,3 +35,29 @@ def test_manifest_no_absolute_paths(monkeypatch, tmp_path):
     p = write_manifest(tmp_path, m)
     assert p == tmp_path / "manifest.json"
     assert json.loads(p.read_text())["run_id"] == "r1"
+
+
+def test_git_sha_independent_of_caller_cwd(monkeypatch, tmp_path):
+    """_git_sha() must resolve THIS package's repo sha regardless of the
+    caller's process cwd -- it pins cwd to this package's own directory
+    rather than trusting whatever directory the run happened to start in."""
+    monkeypatch.chdir(tmp_path)  # tmp_path is not inside any git repo
+    sha = _git_sha()
+    assert sha != "unknown"
+    assert len(sha) == 40
+    assert all(c in "0123456789abcdef" for c in sha)
+
+
+def test_manifest_git_sha_present_when_invoked_from_unrelated_cwd(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    m = _manifest(monkeypatch)
+    assert m["git_sha"] != "unknown"
+    assert len(m["git_sha"]) == 40
+
+
+def test_write_manifest_uses_utf8_encoding(monkeypatch, tmp_path):
+    m = _manifest(monkeypatch)
+    m["profile"] = "로컬-프로파일"  # non-ASCII, would mis-decode under a non-utf8 default
+    p = write_manifest(tmp_path, m)
+    raw = p.read_bytes()
+    assert json.loads(raw.decode("utf-8"))["profile"] == "로컬-프로파일"

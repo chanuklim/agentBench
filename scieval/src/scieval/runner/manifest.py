@@ -15,7 +15,11 @@ SCAFFOLD_ID = "native-v1"  # M1: 벤치마크 네이티브 solver 사용
 def _git_sha() -> str:
     try:
         out = subprocess.run(
-            ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True
+            ["git", "rev-parse", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=True,
+            cwd=Path(__file__).resolve().parent,
         )
         return out.stdout.strip()
     except Exception:
@@ -76,5 +80,5 @@ def build_manifest(
 
 def write_manifest(run_dir: Path, m: dict) -> Path:
     p = run_dir / "manifest.json"
-    p.write_text(json.dumps(m, indent=2, ensure_ascii=False))
+    p.write_text(json.dumps(m, indent=2, ensure_ascii=False), encoding="utf-8")
     return p
