@@ -356,14 +356,14 @@ ul.src-list li{font-family:var(--font-mono);font-size:.72rem;color:var(--ink-3);
 
   <h3 class="psub__t">6개 역량과 M1 커버리지</h3>
   <div class="capgrid">
-    <div class="cap on"><span class="w">22%</span><span class="nm">고난도 과학 추론·수학</span><span class="bench-hint">gpqa · hle · frontierscience</span></div>
-    <div class="cap on"><span class="w">20%</span><span class="nm">과학 코딩·데이터 분석</span><span class="bench-hint">scicode</span></div>
+    <div class="cap on"><span class="w">22%</span><span class="nm">고난도 과학 추론·수학</span><span class="bench-hint">배선 19/22 — gpqa·hle·frontierscience · critpt(3) 미배선</span></div>
+    <div class="cap on"><span class="w">20%</span><span class="nm">과학 코딩·데이터 분석</span><span class="bench-hint">배선 8/20 — scicode · SAB(7)·DiscoveryBench(5) 미배선</span></div>
     <div class="cap"><span class="w">15%</span><span class="nm">문헌 검색·근거 종합</span><span class="bench-hint">로드맵</span></div>
     <div class="cap"><span class="w">23%</span><span class="nm">연구 실행·재현성</span><span class="bench-hint">로드맵</span></div>
     <div class="cap"><span class="w">10%</span><span class="nm">도구 사용·기술 에이전트</span><span class="bench-hint">로드맵</span></div>
     <div class="cap"><span class="w">10%</span><span class="nm">신뢰성·장문맥·보정</span><span class="bench-hint">로드맵</span></div>
   </div>
-  <p class="fineprint">안전성은 이 100점에 합산하지 않고 별도 hard gate로 둔다. 비용·속도는 능력 점수에 섞지 않고 Pareto 축으로 별도 보고한다. M1(4개 데이터셋)은 6개 역량 중 상위 두 축(합 42%)의 Base Model 측정만 우선 구현한 최소 포트폴리오다.</p>
+  <p class="fineprint">안전성은 이 100점에 합산하지 않고 별도 hard gate로 둔다. 비용·속도는 능력 점수에 섞지 않고 Pareto 축으로 별도 보고한다. M1(4개 데이터셋)은 상위 두 축의 일부만 우선 배선한 최소 포트폴리오다 — 지수 기여 기준 배선분은 100 중 27(추론 19/22, 코딩 8/20)이며, 미배선 벤치마크(critpt·scienceagentbench·discoverybench)는 해당 축 coverage 미달로 정직하게 표시된다.</p>
 </section>
     
 <section id="register" class="register">
@@ -895,14 +895,14 @@ def calc_hamiltonian(kx, ky, a, t1, t2, phi, m):
 <section id="roadmap" class="roadmap">
   <div class="section-eyebrow">ROADMAP</div>
   <h2>M1 이후 — 나머지 4개 역량</h2>
-  <p class="lead">전략 문서가 권고하는 전체 포트폴리오 중 M1은 추론·코딩 두 축만 담았다. 나머지 역량은 에이전트 스캐폴드·검색 corpus·컨테이너 실행이 필요해 후속 마일스톤으로 분리된다.</p>
+  <p class="lead">전략 문서가 권고하는 전체 포트폴리오 중 M1은 추론·코딩 두 축의 일부를 담았다 — 두 축 안에도 미배선 항목(CritPt, ScienceAgentBench, DiscoveryBench)이 남아 있으며 이들 역시 v1 커버리지 분모에 포함된다. 나머지 역량은 에이전트 스캐폴드·검색 corpus·컨테이너 실행이 필요해 후속 마일스톤으로 분리된다.</p>
   <div class="rmgrid">
-    <div class="rm done"><div class="rm__w">22% · 완료</div><div class="rm__t">고난도 과학 추론</div><div class="rm__b">GPQA-D · HLE-STEM · FrontierScience. (후보: CritPt, FrontierMath v2)</div><span class="rm__status s-done">M1 배선됨</span></div>
-    <div class="rm done"><div class="rm__w">20% · 완료</div><div class="rm__t">과학 코딩·데이터 분석</div><div class="rm__b">SciCode. (후보: ScienceAgentBench, DiscoveryBench)</div><span class="rm__status s-done">M1 배선됨</span></div>
-    <div class="rm"><div class="rm__w">15% · 예정</div><div class="rm__t">문헌 검색·근거 종합</div><div class="rm__b">AstaBench Literature 묶음(PaperFindingBench, LitQA2, ScholarQA-CS2 등). 검색 corpus·에이전트 필요.</div><span class="rm__status s-plan">로드맵</span></div>
-    <div class="rm"><div class="rm__w">23% · 예정</div><div class="rm__t">연구 실행·재현성</div><div class="rm__b">CORE-Bench-Hard, Asta E2E-Bench, ScienceOps-τ. 최고 가중치이나 컨테이너·장기 실행 필요.</div><span class="rm__status s-plan">로드맵</span></div>
-    <div class="rm"><div class="rm__w">10% · 예정</div><div class="rm__t">도구 사용·기술 에이전트</div><div class="rm__b">Terminal-Bench v2.1, BFCL v4, SWE-bench-Live. inspect_harbor 브리지 검토.</div><span class="rm__status s-plan">로드맵</span></div>
-    <div class="rm"><div class="rm__w">10% · 예정</div><div class="rm__t">신뢰성·장문맥·보정</div><div class="rm__b">AA-Omniscience STEM, AA-LCR, Sci-LCR. HLE의 cerr가 보정 측정의 선행 사례.</div><span class="rm__status s-plan">로드맵</span></div>
+    <div class="rm done"><div class="rm__w">22% · 부분 (19/22)</div><div class="rm__t">고난도 과학 추론</div><div class="rm__b">배선: GPQA-D · HLE-STEM · FrontierScience. 미배선: <a href="#critpt">CritPt</a>(기여 3, M3 사이드 트랙). FrontierMath v2는 <a href="#excluded">제외</a>(비공개).</div><span class="rm__status s-done">M1 부분 배선</span></div>
+    <div class="rm done"><div class="rm__w">20% · 부분 (8/20)</div><div class="rm__t">과학 코딩·데이터 분석</div><div class="rm__b">배선: SciCode. 미배선: <a href="#scienceagentbench">ScienceAgentBench</a>(7, M3 자체 포팅) · <a href="#discoverybench">DiscoveryBench</a>(5, M3 astabench 트랙).</div><span class="rm__status s-done">M1 부분 배선</span></div>
+    <div class="rm"><div class="rm__w">15% · 예정</div><div class="rm__t">문헌 검색·근거 종합</div><div class="rm__b"><a href="#scholarqa_cs2">ScholarQA-CS2</a> · <a href="#litqa2_fulltext">LitQA2-FullText/-Search</a> (PaperFindingBench는 <a href="#excluded">제외</a>). 검색 corpus·에이전트 필요.</div><span class="rm__status s-plan">로드맵</span></div>
+    <div class="rm"><div class="rm__w">23% · 예정</div><div class="rm__t">연구 실행·재현성</div><div class="rm__b"><a href="#core_bench">CORE-Bench</a> · <a href="#super_expert">SUPER-Expert</a> · <a href="#e2e_bench">E2E-Bench(-Hard)</a> (ScienceOps-τ는 v2). 최고 가중치이나 컨테이너·장기 실행 필요.</div><span class="rm__status s-plan">로드맵</span></div>
+    <div class="rm"><div class="rm__w">10% · 예정</div><div class="rm__t">도구 사용·기술 에이전트</div><div class="rm__b"><a href="#terminal_bench">Terminal-Bench 2.1</a> · <a href="#bfcl">BFCL V1–V3/V4</a> · <a href="#swe_bench_live">SWE-bench-Live</a>. inspect_harbor 브리지는 parity 검증 대상.</div><span class="rm__status s-plan">로드맵</span></div>
+    <div class="rm"><div class="rm__w">10% · 예정</div><div class="rm__t">신뢰성·장문맥·보정</div><div class="rm__b"><a href="#aa_omniscience_stem">AA-Omniscience STEM</a> · <a href="#aa_lcr">AA-LCR</a> (자체 Sci-LCR은 v2). HLE의 cerr가 보정 측정의 선행 사례.</div><span class="rm__status s-plan">로드맵</span></div>
   </div>
 </section>
     
