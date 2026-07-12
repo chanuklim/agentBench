@@ -1,0 +1,10 @@
+smoke:
+  entries:
+    - {benchmark: gpqa_diamond, epochs: 1}
+    - {benchmark: frontierscience}
+m1:
+  entries:
+    - {benchmark: gpqa_diamond}
+    - {benchmark: hle_stem}
+    - {benchmark: frontierscience}
+    - {benchmark: scicode}

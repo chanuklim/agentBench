@@ -1,0 +1,2 @@
+local: {provides: [docker, network]}
+server: {provides: [docker, network, linux, high-ram, gpu]}

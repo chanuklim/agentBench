@@ -1,0 +1,16 @@
+judges:
+  hle_stem: openai/gpt-5-mini        # 자사 모델 채점 금지 — 상용 judge 핀
+  frontierscience: openai/gpt-5-mini
+weights:
+  axes:   # 스펙 §5 전체 표 — M1 미구현 벤치마크는 자동 결측 처리
+    reasoning: {weight: 22, benchmarks: {frontierscience_olympiad: 8, frontierscience_research: 6, frontierscience: 14, hle_stem: 5, critpt: 3, gpqa_diamond: 0}}
+    coding: {weight: 20, benchmarks: {scicode: 8, scienceagentbench: 7, discoverybench: 5, ds1000: 0}}
+    literature: {weight: 15, benchmarks: {scholarqa_cs2: 6, litqa2_fulltext: 5, litqa2_fulltext_search: 4}}
+    execution: {weight: 23, benchmarks: {core_bench: 9, super_expert: 6, e2e_bench: 5, e2e_bench_hard: 3}}
+    tooluse: {weight: 10, benchmarks: {terminal_bench: 4, bfcl_v13: 2, bfcl_v4: 2, swe_bench_live: 2}}
+    reliability: {weight: 10, benchmarks: {aa_omniscience_stem: 5, aa_lcr: 5}}
+anchors:
+  gpqa_diamond: {naive: 0.25, expert: 0.81, quality: provisional}   # expert=논문 전문가 검증치, 재확인 필요
+  hle_stem: {naive: 0.0, expert: null, quality: fallback}
+  frontierscience: {naive: 0.0, expert: null, quality: fallback}
+  scicode: {naive: 0.0, expert: null, quality: fallback}

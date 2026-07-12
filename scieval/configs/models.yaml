@@ -1,0 +1,14 @@
+solar-open-100b:
+  inspect_model: openai-api/solar/solar-open-100b
+  base_url_env: SOLAR_BASE_URL      # 예: http://<server>:8000/v1
+  api_key_env: SOLAR_API_KEY
+  max_tokens: 65536
+  pricing:                          # 시작값 — M1 처리량 실측 후 갱신 (스펙 §12)
+    input_per_mtok: 0.20
+    output_per_mtok: 0.80
+gpt-5:
+  inspect_model: openai/gpt-5
+  api_key_env: OPENAI_API_KEY
+  pricing: {input_per_mtok: 1.25, output_per_mtok: 10.0}
+mock:
+  inspect_model: mockllm/model
