@@ -1,0 +1,8 @@
+toy-remote:
+  inspect_model: openai-api/toy/toy-model
+  base_url_env: TEST_BASE_URL
+  api_key_env: null
+  note: "${TEST_BASE_URL}"   # env 확장 동작 확인용
+  pricing: {input_per_mtok: 0.5, output_per_mtok: 1.5}
+mock:
+  inspect_model: mockllm/model

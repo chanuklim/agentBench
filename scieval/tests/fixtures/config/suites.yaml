@@ -1,0 +1,3 @@
+toy:
+  entries:
+    - {benchmark: toy, limit: 2, epochs: 1}

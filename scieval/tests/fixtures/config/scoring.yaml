@@ -1,0 +1,9 @@
+judges:
+  hle_stem: openai/gpt-4o-mini
+weights:
+  axes:
+    reasoning: {weight: 22, benchmarks: {gpqa_diamond: 0, hle_stem: 5, frontierscience: 14}}
+    coding: {weight: 20, benchmarks: {scicode: 8}}
+anchors:
+  gpqa_diamond: {naive: 0.25, expert: 0.81, quality: provisional}
+  hle_stem: {naive: 0.0, expert: null, quality: fallback}

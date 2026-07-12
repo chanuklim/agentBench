@@ -1,0 +1,2 @@
+small: {token_limit: "200k", message_limit: 30, working_limit_s: 600, cost_limit: 2.0}
+standard: {token_limit: "1m", message_limit: 100, working_limit_s: 2400}
