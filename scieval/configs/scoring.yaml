@@ -3,7 +3,11 @@ judges:
   frontierscience: openai/gpt-5-mini
 weights:
   axes:   # 스펙 §5 전체 표 — M1 미구현 벤치마크는 자동 결측 처리
-    reasoning: {weight: 22, benchmarks: {frontierscience_olympiad: 8, frontierscience_research: 6, frontierscience: 14, hle_stem: 5, critpt: 3, gpqa_diamond: 0}}
+    # 축 내 기여 합 == 축 weight 이어야 axis coverage 분모가 올바르다.
+    # frontierscience는 M1에서 단일 태스크(14)로 실행 — M2에서 olympiad(8)/research(6)로
+    # 분리 활성화 시 combined를 0으로 내리고 분리 항목에 8/6을 부여한다(합 동일).
+    # critpt(3)는 v1 선언 포트폴리오이므로 유지 — 미구현 동안 coverage에 미달로 반영되는 것이 의도.
+    reasoning: {weight: 22, benchmarks: {frontierscience: 14, frontierscience_olympiad: 0, frontierscience_research: 0, hle_stem: 5, critpt: 3, gpqa_diamond: 0}}
     coding: {weight: 20, benchmarks: {scicode: 8, scienceagentbench: 7, discoverybench: 5, ds1000: 0}}
     literature: {weight: 15, benchmarks: {scholarqa_cs2: 6, litqa2_fulltext: 5, litqa2_fulltext_search: 4}}
     execution: {weight: 23, benchmarks: {core_bench: 9, super_expert: 6, e2e_bench: 5, e2e_bench_hard: 3}}
