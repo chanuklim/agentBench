@@ -25,7 +25,10 @@ def check_endpoint(
         )
         if resp.status_code != 200:
             return HealthReport(False, False, f"HTTP {resp.status_code}: {resp.text[:200]}")
-        body = resp.json()
+        try:
+            body = resp.json()
+        except ValueError:
+            return HealthReport(False, False, f"non-JSON response: {resp.text[:100]}")
         if not body.get("choices"):
             return HealthReport(False, False, "no choices in response")
         usage_present = "completion_tokens" in (body.get("usage") or {})
